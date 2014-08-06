@@ -3,18 +3,27 @@
 <body>
 <head>
 <link rel="stylesheet" type="text/css" href="my_style.css">
+<script src="http://platform.linkedin.com/in.js">
+api_key: insert_key
+authorize: true
+</script>
+<script src="jquery-1.11.1.min.js"></script>
+<script src="my_script.js"></script>
 </head>
 
 <h1 id="title">My Web Page</h1>
 
-<p id="demo">A Paragraph.</p>
+<p id="demo">My firstname in Linkedin profile is </p>
 <p id="result">Result</p>
 
-<button type="button" onclick="myFunction(1, 'hello')">Try it</button>
+<button type="button" onclick="myFunction(1, 'hello')">Get it</button>
 
-<input type="text" id="data">
+<!--<input type="text" id="data">-->
+<br>
+<script type="in/login">
+Hello, <?js= firstName ?> <?js= lastName ?>.
+</script>
 
-<script src="jquery-1.11.1.min.js"></script>
-<script src="my_script.js"></script>
+
 </body>
 </html>

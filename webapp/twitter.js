@@ -1,45 +1,38 @@
-var OAuth2 = require('oauth').OAuth2;
-var https = require('https');
+var twit = require('twit');
 
-var oauth2 = new OAuth2('', '', 'https://api.twitter.com/', null, 'oauth2/token', null);
+var config = {
+  consumer_key: '',  
+  consumer_secret: '',
+  access_token: '',  
+  access_token_secret: ''
+}
 
+var Twitter = new twit(config);
 
-/*var access_token = oauth2.getOAuthAccessToken('', {
-    'grant_type': 'client_credentials'
-  }, function (e, access_token) {
-      console.log(access_token); //string that we can use to authenticate request
-});
-*/
 
 function listTweets(response, screen_name) {
-  var options = {
-      hostname: 'api.twitter.com',
-      path: '/1.1/statuses/user_timeline.json?screen_name='+screen_name,
-      headers: {
-          Authorization: 'Bearer ' + access_token
-      }
-  };
-  var https = require('https');
-  https.get(options, function(result){
-    var buffer = '';
-    var tweet_texts = '';
-    result.setEncoding('utf8');
-    result.on('data', function(data){
-      buffer += data;
-    });
-    result.on('end', function() {
-      tweets = JSON.parse(buffer);
-      for(var key in tweets) {
-        tweet = tweets[key];
+  var params = { 'screen_name' : screen_name}
+  var tweet_texts = ''
+
+  Twitter.get('statuses/user_timeline', params, function(err,data,resp) {
+    if (resp.statusCode == '200') {
+      for(var key in data) {
+        tweet = data[key];
         tweet_texts = tweet_texts+ '\n\n' +tweet['text']
       }
       response.writeHead(200, {"Content-Type": "text/plain"});
       response.write("Tweets: \n" +tweet_texts); 
       response.end();
+    } else {
+      response.writeHead(200, {"Content-Type": "text/plain"});
+      response.write("Screen name not found!"); 
+      response.end();
+    }
+
+  });
+
 
  
-   });
-  });
 }
 
 exports.listTweets = listTweets;
